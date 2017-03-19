@@ -9,7 +9,7 @@
 
 FooClass::FooClass() {
 	// initialize variables
-	_variableOne = 2;
+	_variableOne = 64;
 	_variableTwo = 3;
 }
 

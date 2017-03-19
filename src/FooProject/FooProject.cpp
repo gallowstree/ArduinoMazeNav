@@ -1,23 +1,20 @@
 #include <Arduino.h>
-#include <Wire.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
 #include "FooLib.h"
 
-FooClass FooObject;
+//DistanceSensor sensor(A0, A1);
 
 void setup() {
-
-	Serial.begin(115200);
-	delay(1000);
-
+    Serial.begin(115200);
 }
 
 void loop() {
-
-	Serial.println("Hello world");
-	FooObject.firstFooMethod();
-	delay(1000);
-	FooObject.secondFooMethod();
-	delay(1000);
-
+    /*float distance = sensor.GetDistanceCm();
+    Serial.println(distance);
+    delay(250);*/
 }
 

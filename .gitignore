@@ -8,3 +8,6 @@ doc/
 debug.txt
 .ycm_extra_conf.pyc
 .ropeproject
+.ycm_extra_conf.py
+.idea
+

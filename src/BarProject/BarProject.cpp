@@ -1,8 +1,9 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "BarLib.h"
+#include "FooLib.h"
+#include "DistanceSensor.h"
 
-BarClass BarObject;
+DistanceSensor sensor(A0, A1);
 
 void setup() {
 
@@ -12,11 +13,7 @@ void setup() {
 }
 
 void loop() {
-
-	BarObject.firstBarMethod();
-	delay(1000);
-	BarObject.secondBarMethod();
-	delay(1000);
-
+    float distance = sensor.GetDistanceCm();
+    Serial.println(distance);
+    delay(250);
 }
-
