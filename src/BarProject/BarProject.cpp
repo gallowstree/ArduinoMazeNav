@@ -3,6 +3,7 @@
 #include "FooLib.h"
 #include "DistanceSensor.h"
 #include "WifiConnection.h"
+#include "ESP8266/SparkFunESP8266WiFi.h"
 
 DistanceSensor sensor1(A0, A1);
 DistanceSensor sensor2(A2, A3);
