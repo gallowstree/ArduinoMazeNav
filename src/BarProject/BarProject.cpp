@@ -1,9 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "FooLib.h"
 #include "DistanceSensor.h"
 #include "WifiConnection.h"
-#include "ESP8266/SparkFunESP8266WiFi.h"
 
 DistanceSensor sensor1(A0, A1);
 DistanceSensor sensor2(A2, A3);
@@ -12,7 +10,7 @@ DistanceSensor sensor2(A2, A3);
 void setup() {
 
 	Serial.begin(9600);
-	Serial.println("Hola putos!");
+	Serial.println("Starting up :3");
 	delay(1000);
 
 	WifiConnection conn;
