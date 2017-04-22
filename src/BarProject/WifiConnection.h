@@ -12,20 +12,19 @@
 //a wrapper for the ESP8266 (or any other wifi module)
 class WifiConnection {
 
-public:
+	public:
 
-	WifiConnection();
-	void Begin();
+		WifiConnection();
+		void Begin();
 
-private:
-	
-	const char *ssid = "wonderland";
-	const char *psk = "starstuff";	
+	private:
+		
+		const char *ssid = "TURBONETT_0B2C35";
+		const char *psk = "g@t0sc0nw1f1";	
 
-	void initializeESP8266();	
-	void connectESP8266();
-	void displayConnectInfo();
+		void initializeESP8266();	
+		void connectESP8266();
+		void displayConnectInfo();
 };
 
 #endif
-
