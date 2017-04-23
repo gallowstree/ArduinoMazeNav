@@ -2,11 +2,12 @@
 #include <Wire.h>
 #include "DistanceSensor.h"
 #include "WifiConnection.h"
-#include "UdpServer.h"
+#include "TcpDispatcher.h"
+#include <string.h>
 
 DistanceSensor sensor1(A0, A1);
 DistanceSensor sensor2(A2, A3);
-UdpServer udpServer(44420);
+TcpDispatcher dispatcher(4420);
 
 void setup() {
 
@@ -17,7 +18,7 @@ void setup() {
 	WifiConnection conn;
 	conn.Begin();
 
-	udpServer.begin();
+	dispatcher.begin();
 }
 
 void loop() {
@@ -25,6 +26,6 @@ void loop() {
     Serial.println(distance);
     delay(250);*/
 
-	udpServer.checkForPackets();
+	dispatcher.checkForPackets();
 
 }

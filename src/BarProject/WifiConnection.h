@@ -19,8 +19,8 @@ class WifiConnection {
 
 	private:
 		
-		const char *ssid = "TURBONETT_0B2C35";
-		const char *psk = "g@t0sc0nw1f1";	
+		const char *ssid = "i like your squanch!";
+		const char *psk = "s@t@n@s666";	
 
 		void initializeESP8266();	
 		void connectESP8266();
