@@ -23,6 +23,9 @@ void MotorDriver::moveForward()
     digitalWrite(right1, LOW);
     digitalWrite(left0, HIGH);
     digitalWrite(left1, LOW);
+
+    // delay(pulseDuration);
+    // stop();
 }
 
 void MotorDriver::moveBackwards()
@@ -32,6 +35,9 @@ void MotorDriver::moveBackwards()
     digitalWrite(right1, HIGH);
     digitalWrite(left0, LOW);
     digitalWrite(left1, HIGH);
+
+    // delay(pulseDuration);
+    // stop();
 }
 
 void MotorDriver::rotate(bool clockwise)
@@ -41,4 +47,7 @@ void MotorDriver::rotate(bool clockwise)
     digitalWrite(right1, clockwise ? LOW : HIGH);
     digitalWrite(left0, clockwise ? LOW : HIGH);
     digitalWrite(left1, clockwise ? HIGH : LOW);
+
+    // delay(pulseDuration);
+    // stop();
 }

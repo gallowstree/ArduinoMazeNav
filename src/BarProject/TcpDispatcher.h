@@ -15,8 +15,7 @@ class TcpDispatcher {
         int port;               
         ESP8266Server server;
         char inBuffer[127];
-        CommandDispatcher dispatcher;
-
+        CommandDispatcher dispatcher;        
 };
 
 #endif 

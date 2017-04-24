@@ -17,6 +17,7 @@ class MotorDriver {
 		int right1 = A1;
 		int left0 = A2;
 		int left1 = A3;
+		int pulseDuration = 50;
 };
 
 #endif

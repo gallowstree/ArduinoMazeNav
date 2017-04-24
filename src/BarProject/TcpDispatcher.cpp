@@ -19,19 +19,19 @@ void TcpDispatcher::checkForPackets() {
         bool shouldCopy = false;
         memset(inBuffer, 0, sizeof(inBuffer));
         while (client.connected()) 
-        {            
-            if (client.available()) 
-            {
+        {
+            while (!client.available());
+            
                 char c = client.read();
 
-                if (shouldCopy)
-                    inBuffer[i++] = c;
-                if (!shouldCopy && c == ':')
-                    shouldCopy = true;                
-            }                
+            if (shouldCopy)
+                inBuffer[i++] = c;
+            if (!shouldCopy && c == ':')
+                shouldCopy = true;                            
         }
-        Serial.println(inBuffer);
-        client.stop();
+        // Serial.println("inBuffer:");
+        // Serial.println(inBuffer);
+        //client.stop();
 
         dispatcher.handleMessage(inBuffer);
     }   
