@@ -5,8 +5,8 @@
 
 ### PROJECT_DIR
 ### This is the path to where you have created/cloned your project
-# PROJECT_DIR       = $(HOME)/MazeNav/ArduinoMazeNav
-PROJECT_DIR       = $(HOME)/dev/galileo/sp1/ArduinoMazeNav
+PROJECT_DIR       = $(HOME)/MazeNav/ArduinoMazeNav
+# PROJECT_DIR       = $(HOME)/dev/galileo/sp1/ArduinoMazeNav
 # PROJECT_DIR       = $(HOME)/dev/arduino/bare-arduino-project
 
 ### AVR_GCC_VERSION
