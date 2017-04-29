@@ -15,9 +15,12 @@ class MotorDriver {
 	private:
 		int right0 = A0;
 		int right1 = A1;
+		int rightPwm = 2;
 		int left0 = A2;
 		int left1 = A3;
-		int pulseDuration = 50;
+		int leftPwm = 3;
+		int pulseLength = 255;
+		float pulseFraction = 0.5;
 };
 
 #endif
