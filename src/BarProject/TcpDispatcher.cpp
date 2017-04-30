@@ -11,7 +11,7 @@ void TcpDispatcher::begin() {
 }
 
 void TcpDispatcher::checkForPackets() {
-    ESP8266Client client = server.available(255);
+    ESP8266Client client = server.available(100);
     if (client) 
     {
         Serial.println(F("Client Connected!"));

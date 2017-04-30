@@ -20,7 +20,7 @@ class MotorDriver {
 		int left1 = A3;
 		int leftPwm = 3;
 		int pulseLength = 255;
-		float pulseFraction = 0.5;
+		float pulseFraction = 0.35;
 };
 
 #endif
