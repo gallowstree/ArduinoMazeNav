@@ -1,15 +1,26 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <string.h>
 #include "DistanceSensor.h"
 #include "WifiConnection.h"
 #include "TcpDispatcher.h"
-#include <string.h>
 #include "ImuReader.h"
+#include "MotionController.h"
+#include "CommandDispatcher.h"
 
 DistanceSensor sensor1(A0, A1);
 DistanceSensor sensor2(A2, A3);
-TcpDispatcher dispatcher(4420);
+MotorDriver mtrDriver;
 ImuReader imu;
+WifiConnection conn;
+MotionController motion(&imu, &mtrDriver);
+CommandDispatcher cmdDispatcher(&mtrDriver, &motion);
+TcpDispatcher tcpDispatcher(4420, &cmdDispatcher);
+
+
+void initializeObjects() {
+
+}
 
 void setup() {
 
@@ -17,10 +28,9 @@ void setup() {
 	Serial.println("Starting up :3");
 	Wire.begin();
 	delay(1000);
-
-	WifiConnection conn;
+	
 	conn.Begin();
-	dispatcher.begin();
+	tcpDispatcher.begin();
 	imu.init();
 	imu.start();
 }
@@ -30,7 +40,7 @@ void loop() {
     Serial.println(distance);
     delay(250);*/
 
-	dispatcher.checkForPackets();	
+	tcpDispatcher.checkForPackets();	
 	imu.tick();
 	Serial.println(imu.rotation);
 }

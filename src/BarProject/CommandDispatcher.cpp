@@ -3,7 +3,12 @@
 #include "string.h"
 #include <Arduino.h>
 
-CommandDispatcher::CommandDispatcher() {}
+CommandDispatcher::CommandDispatcher(MotorDriver* motors, MotionController* motion) : 
+	motorDriver(motors), 
+	motionController(motion) 
+	{
+		
+	}
 
 void CommandDispatcher::handleMessage(char* data) {
 
@@ -39,15 +44,15 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 		// Serial.println(action);
 
 		if (strcmp(action, "STOP") == 0) {
-			motorDriver.stop();
+			motorDriver->stop();
 		} else if (strcmp(action, "FORWARD") == 0) {
-			motorDriver.moveForward();
+			motorDriver->moveForward();
 		} else if (strcmp(action, "BACKWARDS") == 0) {
-			motorDriver.moveBackwards();
+			motorDriver->moveBackwards();
 		} else if (strcmp(action, "CLOCKWISE") == 0) {
-			motorDriver.rotate(true);
+			motorDriver->rotate(true);
 		} else if (strcmp(action, "COUNTERCLOCKWISE") == 0) {
-			motorDriver.rotate(false);
+			motorDriver->rotate(false);
 		}
 
 		delete action;

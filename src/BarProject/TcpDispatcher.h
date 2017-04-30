@@ -7,7 +7,7 @@
 class TcpDispatcher {
 
     public:
-        TcpDispatcher(int port);
+        TcpDispatcher(int port, CommandDispatcher* dispatcher);
         void begin();
         void checkForPackets();
 
@@ -15,7 +15,7 @@ class TcpDispatcher {
         int port;               
         ESP8266Server server;
         char inBuffer[127];
-        CommandDispatcher dispatcher;        
+        CommandDispatcher *dispatcher;        
 };
 
 #endif 

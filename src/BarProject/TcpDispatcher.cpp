@@ -2,8 +2,9 @@
 #include <Arduino.h>
 
 
-TcpDispatcher::TcpDispatcher(int port):
+TcpDispatcher::TcpDispatcher(int port, CommandDispatcher* cmd):
     port(port),
+    dispatcher(cmd),
     server(ESP8266Server(port)) {}
 
 void TcpDispatcher::begin() {
@@ -33,6 +34,6 @@ void TcpDispatcher::checkForPackets() {
         // Serial.println(inBuffer);
         //client.stop();
 
-        dispatcher.handleMessage(inBuffer);
+        dispatcher->handleMessage(inBuffer);
     }   
 }
