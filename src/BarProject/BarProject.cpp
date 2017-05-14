@@ -14,10 +14,11 @@ DistanceSensor sensor2(A2, A3);
 MotorDriver mtrDriver;
 WifiConnection conn;
 ImuReader imu;
-MotionController motion(&imu, &mtrDriver);
-CommandDispatcher cmdDispatcher(&mtrDriver, &motion);
-TcpDispatcher tcpDispatcher(4420, &cmdDispatcher);
 Odometer odometer(3.15f, 195, 19, 18);
+MotionController motion(&odometer, &imu, &mtrDriver);
+CommandDispatcher cmdDispatcher(&motion);
+TcpDispatcher tcpDispatcher(4420, &cmdDispatcher);
+
 
 
 float prevLeft = 0;
@@ -35,14 +36,14 @@ void setup() {
 	delay(1000);
 	
 	conn.Begin();
-	tcpDispatcher.begin();
-	odometer.enable();
+	tcpDispatcher.begin();	
 	//imu.init();	
 }
 
 void loop() {
 
-	//tcpDispatcher.checkForPackets();
+	tcpDispatcher.checkForPackets();
+	/*
 	float left = odometer.getLeftDistance();
 	float right = odometer.getRightDistance();
 
@@ -54,4 +55,5 @@ void loop() {
 		prevLeft = left;
 		prevRight = right;
 	}
+	*/
 }

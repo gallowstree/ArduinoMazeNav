@@ -1,7 +1,34 @@
 #include "MotionController.h"
 
-MotionController::MotionController(ImuReader* imu, MotorDriver* motors) : imu(imu), motors(motors) {}
+MotionController::MotionController(Odometer* odometer, ImuReader* imu, MotorDriver* motors) : 
+imu(imu),
+motors(motors), 
+odometer(odometer) {}
 
-void MotionController::rotate(int degrees, bool clockwise) {
+void MotionController::rotate(float degrees, bool clockwise) {
    
+}
+
+void MotionController::stop() {
+    motors->stop();
+}
+
+void MotionController::moveForward(float cm) {    
+    motors->moveForward();
+    waitForDistance(cm);
+    motors->stop();
+}
+
+void MotionController::moveBackwards(float cm) {
+    motors->moveBackwards();
+    waitForDistance(cm);
+    motors->stop();
+}
+
+void MotionController::waitForDistance(float cm) {
+    odometer->enable();
+    while (odometer->getMaxDistance() < cm) {
+        
+    }
+    odometer->disable();
 }

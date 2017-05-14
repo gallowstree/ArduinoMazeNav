@@ -13,13 +13,11 @@ rightInterruptPin(rightInterruptPin) { }
 
 
 void Odometer::leftISR() {
-    leftInt++;
-    //return nullptr;
+    leftInt++;    
 }
 
 void Odometer::rightISR() {
-    rightInt++;
-    //return nullptr;
+    rightInt++;    
 }
 
 void Odometer::enable() {
@@ -35,9 +33,21 @@ void Odometer::disable() {
 }
 
 float Odometer::getRightDistance() {
-    return 2 * PI * (Odometer::rightInt / resolution) * wheelRadius;
+    return calculateDistance(Odometer::rightInt);
 }
 
 float Odometer::getLeftDistance() {
-    return 2 * PI * (Odometer::leftInt / resolution) * wheelRadius;
+    return calculateDistance(Odometer::leftInt);
+}
+
+float Odometer::getAvgDistance() {
+    return ( getLeftDistance() + getRightDistance() ) / 2.0f;
+}
+
+float Odometer::getMaxDistance() {
+    return max(getLeftDistance(), getRightDistance());
+}
+
+float Odometer::calculateDistance(float interrupts) {
+    return TWO_PI * (interrupts / resolution) * wheelRadius;
 }
