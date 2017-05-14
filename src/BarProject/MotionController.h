@@ -7,7 +7,7 @@
 class MotionController {
 public:
     MotionController(ImuReader * imu, MotorDriver * motors);
-    void rotate(int degrees, bool clockwise);
+    void rotate(int degrees, bool clockwise);    
 private:
     ImuReader* imu;
     MotorDriver* motors;

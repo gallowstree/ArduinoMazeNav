@@ -7,16 +7,21 @@
 #include "ImuReader.h"
 #include "MotionController.h"
 #include "CommandDispatcher.h"
+#include "Odometer.h"
 
 DistanceSensor sensor1(A0, A1);
 DistanceSensor sensor2(A2, A3);
 MotorDriver mtrDriver;
-ImuReader imu;
 WifiConnection conn;
+ImuReader imu;
 MotionController motion(&imu, &mtrDriver);
 CommandDispatcher cmdDispatcher(&mtrDriver, &motion);
 TcpDispatcher tcpDispatcher(4420, &cmdDispatcher);
+Odometer odometer(3.15f, 195, 19, 18);
 
+
+float prevLeft = 0;
+float prevRight = 0;
 
 void initializeObjects() {
 
@@ -31,16 +36,22 @@ void setup() {
 	
 	conn.Begin();
 	tcpDispatcher.begin();
-	imu.init();
-	imu.start();
+	odometer.enable();
+	//imu.init();	
 }
 
 void loop() {
-    /*float distance = sensor1.GetDistanceCm();
-    Serial.println(distance);
-    delay(250);*/
 
-	tcpDispatcher.checkForPackets();	
-	imu.tick();
-	Serial.println(imu.rotation);
+	//tcpDispatcher.checkForPackets();
+	float left = odometer.getLeftDistance();
+	float right = odometer.getRightDistance();
+
+	if (prevLeft != left || prevRight != right) {
+		Serial.print("Left: ");
+		Serial.print(left);
+		Serial.print("Right: ");
+		Serial.println(right);
+		prevLeft = left;
+		prevRight = right;
+	}
 }

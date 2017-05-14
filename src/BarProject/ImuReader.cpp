@@ -15,13 +15,15 @@ bool ImuReader::init() {
     }
 }
 
-void ImuReader::start() {
+void ImuReader::restart() {
     rotation = 0;
+    gyroZ = 0;
     recording = true;
 }
 
 void ImuReader::stop() {
     recording = false;
+    gyroZ = 0;
 }
 
 void ImuReader::tick() {
@@ -29,8 +31,9 @@ void ImuReader::tick() {
 
     readData();    
     myIMU.delt_t = millis() - myIMU.count;
+    delt_t = myIMU.delt_t;
     
-    if (myIMU.delt_t > 100) 
+    if (myIMU.delt_t > 50) 
     {
         if(serialDebug) 
         {
@@ -43,9 +46,12 @@ void ImuReader::tick() {
             Serial.println("\tdeg/s");
         }
 
+
         if ( abs(myIMU.gz) > gyroThreshold ) {
-            rotation += myIMU.delt_t/1000.0 * myIMU.gz;    
-            rotation = static_cast<int>(rotation) % 360;
+            float reading = myIMU.delt_t/1000.0 * myIMU.gz;
+            reading = positiveAngleOnly ? abs(reading) : reading;
+            rotation += reading;    
+            rotation = static_cast<int>(rotation) % 360;            
         }
             
         myIMU.count = millis();
@@ -72,6 +78,7 @@ void ImuReader::readData() {
         myIMU.gx = (float)myIMU.gyroCount[0] * myIMU.gRes;
         myIMU.gy = (float)myIMU.gyroCount[1] * myIMU.gRes;
         myIMU.gz = (float)myIMU.gyroCount[2] * myIMU.gRes;
+        gyroZ = myIMU.gz;
     }
 
     myIMU.updateTime();
@@ -89,7 +96,7 @@ bool ImuReader::communicationTest() {
 }
 
 void ImuReader::selfTest() {
-    // Start by performing self test and reporting values
+    // reStart by performing self test and reporting values
     myIMU.MPU9250SelfTest(myIMU.selfTest);
     Serial.print(F("x-axis self test: acceleration trim within : "));
     Serial.print(myIMU.selfTest[0],1); Serial.println("% of factory value");

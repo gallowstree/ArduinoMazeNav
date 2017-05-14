@@ -50,9 +50,13 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 		} else if (strcmp(action, "BACKWARDS") == 0) {
 			motorDriver->moveBackwards();
 		} else if (strcmp(action, "CLOCKWISE") == 0) {
-			motorDriver->rotate(true);
+			//motorDriver->rotate(true);
+			// for (int i = 0; i < 3; i++)
+				motionController->rotate(75, true);
 		} else if (strcmp(action, "COUNTERCLOCKWISE") == 0) {
-			motorDriver->rotate(false);
+			//motorDriver->rotate(false);
+			// for (int i = 0; i < 3; i++)
+				motionController->rotate(90, false);
 		}
 
 		delete action;
