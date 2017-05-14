@@ -40,6 +40,14 @@ float Odometer::getLeftDistance() {
     return calculateDistance(Odometer::leftInt);
 }
 
+float Odometer::getAvgDistance() {
+    return ( getLeftDistance() + getRightDistance() ) / 2.0f;
+}
+
+float Odometer::getMaxDistance() {
+    return max(getLeftDistance(), getRightDistance());
+}
+
 float Odometer::calculateDistance(float interrupts) {
-    return 2 * PI * (interrupts / resolution) * wheelRadius;
+    return TWO_PI * (interrupts / resolution) * wheelRadius;
 }

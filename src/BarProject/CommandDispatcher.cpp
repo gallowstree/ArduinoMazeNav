@@ -3,8 +3,7 @@
 #include "string.h"
 #include <Arduino.h>
 
-CommandDispatcher::CommandDispatcher(MotorDriver* motors, MotionController* motion) : 
-	motorDriver(motors), 
+CommandDispatcher::CommandDispatcher(MotionController* motion) : 	
 	motionController(motion) 
 	{
 		
@@ -24,7 +23,7 @@ void CommandDispatcher::handleMessage(char* data) {
 		// Serial.print("cmdType: ");
 		// Serial.println(cmdType);		
 
-		if (strcmp(cmdType, "MOTOR") == 0) {
+		if (strcmp(cmdType, "MOTOR") == 0) {			
 			handleMotorCmd(data + cmdTypeLength + 1);
 		}
 
@@ -43,16 +42,28 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 		// Serial.print("action: ");
 		// Serial.println(action);
 
+		int cmdParamLength = indexOf(data, '\n', actionLength);
+		float cmdParam = 0;
+
+		if (cmdParamLength != -1) {
+			auto paramStr = new char[cmdParamLength + 1];
+			memset(paramStr, 0, cmdParamLength + 1);
+			memcpy(paramStr, data + actionLength, cmdParamLength);	
+			cmdParam = atof(paramStr);
+			Serial.print("Param: ");
+			Serial.println(cmdParam);
+		}		
+
 		if (strcmp(action, "STOP") == 0) {
-			motorDriver->stop();
+			motionController->stop();
 		} else if (strcmp(action, "FORWARD") == 0) {
-			motorDriver->moveForward();
+			motionController->moveForward(cmdParam);
 		} else if (strcmp(action, "BACKWARDS") == 0) {
-			motorDriver->moveBackwards();
+			motionController->moveBackwards(cmdParam);
 		} else if (strcmp(action, "CLOCKWISE") == 0) {			
-			motionController->rotate(90, true);
+			motionController->rotate(cmdParam, true);
 		} else if (strcmp(action, "COUNTERCLOCKWISE") == 0) {			
-			motionController->rotate(90, false);
+			motionController->rotate(cmdParam, false);
 		}
 
 		delete action;

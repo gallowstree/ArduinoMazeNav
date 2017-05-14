@@ -11,6 +11,8 @@ public:
         void disable();
         float getRightDistance();
         float getLeftDistance();
+        float getAvgDistance();
+        float getMaxDistance();
 
         
         static volatile float leftInt;
@@ -25,6 +27,7 @@ private:
         int rightInterruptPin;
 
         float calculateDistance(float interrupts);
+        
 };
 
 #endif
