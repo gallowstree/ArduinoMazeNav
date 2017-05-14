@@ -27,7 +27,7 @@ ARDUINO_DIR       = /Applications/Arduino.app/Contents/Java
 ### USER_LIB_PATH
 ### Path to where the your project's libraries are stored.
 USER_LIB_PATH    :=  $(realpath $(PROJECT_DIR)/lib)
-ARDUINO_LIBS = SPI SoftwareSerial Wire ESP8266 WiFi MPU9250
+ARDUINO_LIBS = SPI SoftwareSerial Wire WiFi ESP8266 MPU9250 PID PID-AutoTune
 
 ### BOARD_TAG & BOARD_SUB
 ### For Arduino IDE 1.0.x
