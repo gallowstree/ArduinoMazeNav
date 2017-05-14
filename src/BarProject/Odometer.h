@@ -23,10 +23,8 @@ private:
         
         int leftInterruptPin;
         int rightInterruptPin;
-        
 
-                
-        //void calcDistance();
+        float calculateDistance(float interrupts);
 };
 
 #endif
