@@ -27,8 +27,11 @@ void MotionController::moveBackwards(float cm) {
 
 void MotionController::waitForDistance(float cm) {
     odometer->enable();
-    while (odometer->getMaxDistance() < cm) {
-        
+    float r = 0, l = 0;
+    while ((r = odometer->getRightDistance()) < cm ||
+           (l = odometer->getLeftDistance()) < cm) {
+        if (r >= cm) motors->stopRight();
+        if (l >= cm) motors->stopLeft();
     }
     odometer->disable();
 }
