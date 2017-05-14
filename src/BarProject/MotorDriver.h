@@ -12,7 +12,15 @@ class MotorDriver {
 		void moveBackwards();
 		void rotate(bool clockwise);	
 		void setPower(float multiplier);	
-		float getPower();		
+		float getPower();	
+
+		void rightForward();
+		void rightBackwards();
+		void stopRight();
+
+		void leftForward();
+		void leftBackwards();
+		void stopLeft();
 
 	private:
 		int right0 = A0;
