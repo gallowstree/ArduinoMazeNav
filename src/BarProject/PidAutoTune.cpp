@@ -1,15 +1,15 @@
 #include "PidAutoTune.h"
-
-PidAutoTune::PidAutoTune(double input, double output, double setpoint):
+/*
+PidAutoTune::PidAutoTune(double* input, double* output, double setpoint, int port):
 input(input),
 output(output),
 setpoint(setpoint),
-myPID(&input, &output, &setpoint, kp, ki, kd, DIRECT), 
-aTune(&input, &output) {     
+port(port),
+aTune(input, output),
+myPID(input, output, setpoint, kp, ki, kd, DIRECT)  {     
     myPID.SetMode(AUTOMATIC);
     
-    changeAutoTune(false);
-    Serial.begin(9600);
+    changeAutoTune(false);    
 }
 
 void PidAutoTune::tune() {
@@ -25,11 +25,12 @@ void PidAutoTune::tune() {
         return;
     }
     
+    analogWrite(port, output);
     print(true);
     tune();
 }
 
-void PidAutoTune::changeAutoTune(boolean stop) {
+void PidAutoTune::changeAutoTune(boolean stop) {    
     if(!stop) {
         aTune.SetNoiseBand(aTuneNoise);
         aTune.SetOutputStep(aTuneStep);
@@ -43,8 +44,8 @@ void PidAutoTune::changeAutoTune(boolean stop) {
 
 void PidAutoTune::print(boolean tuning) {
   Serial.print("setpoint: ");Serial.print(setpoint); Serial.print(" ");
-  Serial.print("input: ");Serial.print(input); Serial.print(" ");
-  Serial.print("output: ");Serial.print(output); Serial.print(" ");
+  Serial.print("input: ");Serial.print(*input); Serial.print(" ");
+  Serial.print("output: ");Serial.print(*output); Serial.print(" ");
   if(tuning){
     Serial.println("tuning mode");
   } else {
@@ -52,4 +53,4 @@ void PidAutoTune::print(boolean tuning) {
     Serial.print("ki: ");Serial.print(myPID.GetKi());Serial.print(" ");
     Serial.print("kd: ");Serial.print(myPID.GetKd());Serial.println();
   }
-}
+}*/

@@ -17,7 +17,7 @@
  *    The parameters specified here are those for for which we can't set up 
  *    reliable defaults, so we need to have the user set them.
  ***************************************************************************/
-PID::PID(double* Input, double* Output, double* Setpoint,
+PID::PID(volatile double* Input, volatile double* Output, double* Setpoint,
         double Kp, double Ki, double Kd, int ControllerDirection)
 {
 	
@@ -58,10 +58,26 @@ bool PID::Compute()
       if(ITerm > outMax) ITerm= outMax;
       else if(ITerm < outMin) ITerm= outMin;
       double dInput = (input - lastInput);
- 
+
+      
       /*Compute PID Output*/
       double output = kp * error + ITerm- kd * dInput;
-      
+    //   Serial.print("p:");
+    //   Serial.print(kp);
+    //   Serial.print(" i:");
+    //   Serial.print(ki);
+    //   Serial.print(" d:");
+    //   Serial.print(kd);
+    //   Serial.print(" sp:");
+    //   Serial.print(*mySetpoint);
+    //   Serial.print(" in:");
+    //   Serial.print(input);
+    //   Serial.print(" o:");
+    //   Serial.print(output);
+    //   Serial.print(" e:");
+    //   Serial.println(error);
+ 
+
 	  if(output > outMax) output = outMax;
       else if(output < outMin) output = outMin;
 	  *myOutput = output;

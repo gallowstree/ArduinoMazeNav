@@ -20,18 +20,20 @@ class MotorDriver {
 
 		void leftForward();
 		void leftBackwards();
-		void stopLeft();
+		void stopLeft();		
+
+		int rightPwm = 2;
+		double rightPulseLength = 0;
+		int leftPwm = 3;
+		double leftPulseLength = 0;
+
 
 	private:
 		int right0 = A0;
 		int right1 = A1;
-		int rightPwm = 2;
 		int left0 = A2;
-		int left1 = A3;
-		int leftPwm = 3;
-		int pulseLength = 255;
-		float rightPulseFraction = 0.8;
-		float leftPulseFraction = 0.8;
+		int left1 = A3;		
+
 };
 
 #endif

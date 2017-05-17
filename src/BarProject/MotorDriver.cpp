@@ -7,8 +7,8 @@ MotorDriver::MotorDriver() {
     pinMode(left1, OUTPUT);
     pinMode(rightPwm, OUTPUT);
     pinMode(leftPwm, OUTPUT);    
-    analogWrite(rightPwm, (int) (pulseLength * rightPulseFraction));
-    analogWrite(leftPwm, (int) (pulseLength * leftPulseFraction));
+    analogWrite(rightPwm, rightPulseLength);
+    analogWrite(leftPwm, leftPulseLength);
 }
 
 void MotorDriver::stop()
@@ -45,23 +45,25 @@ void MotorDriver::rotate(bool clockwise)
 }
 
 void MotorDriver::rightForward() {
-    digitalWrite(right0, HIGH);
-    digitalWrite(right1, LOW);
+    digitalWrite(right0, LOW);
+    digitalWrite(right1, HIGH);
 }
 
 void MotorDriver::rightBackwards() {
-    digitalWrite(right0, LOW);
-    digitalWrite(right1, HIGH);
+    digitalWrite(right0, HIGH);
+    digitalWrite(right1, LOW);
 }
 
 void MotorDriver::stopRight() {
     digitalWrite(right0, LOW);
     digitalWrite(right1, LOW);
+    rightPulseLength = 0;
 }
 
 void MotorDriver::leftForward() {
     digitalWrite(left0, HIGH);
     digitalWrite(left1, LOW);
+    leftPulseLength = 0;
 }
 
 void MotorDriver::leftBackwards() {
@@ -74,10 +76,9 @@ void MotorDriver::stopLeft() {
     digitalWrite(left1, LOW);
 }
 
-void MotorDriver::setPower(float multiplier) {
-    //pulseFraction = multiplier;
-    analogWrite(rightPwm, (int) (pulseLength * rightPulseFraction));
-    analogWrite(leftPwm, (int) (pulseLength * leftPulseFraction));
+void MotorDriver::setPower(float multiplier) {    
+    analogWrite(rightPwm,rightPulseLength);
+    analogWrite(leftPwm, leftPulseLength);
 }
 
 float MotorDriver::getPower() {
