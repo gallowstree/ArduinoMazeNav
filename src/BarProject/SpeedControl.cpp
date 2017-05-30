@@ -8,7 +8,7 @@ setpoint(setpoint),
 pin(pin),
 myPID(input, output, setpoint, kp, ki, kd, DIRECT) {
     myPID.SetSampleTime(50);
-    //myPID.SetOutputLimits(60, 120);
+     myPID.SetOutputLimits(120, 255);
 }
 
 void SpeedControl::enable() {
@@ -18,18 +18,16 @@ void SpeedControl::enable() {
 
 void SpeedControl::disable() {
     myPID.SetMode(MANUAL);
+    *output = 0;
 }
 
 void SpeedControl::updatePID() {
-    
     myPID.Compute();
-    analogWrite(pin, *output);
 
-    if (pin != 2 ) return;
-    Serial.print("pin: ");
-    Serial.print(pin);
-    Serial.print(" i:");
-    Serial.print(*input);
-    Serial.print(" o:");
-    Serial.println(*output);
+    // Serial.print("Pin: ");
+    // Serial.print(pin);
+    // Serial.print(" Output: ");
+    // Serial.println(*output);
+    analogWrite(pin, *output);
 }
+

@@ -11,13 +11,17 @@ public:
 
 private:
     PID myPID;
-    // double kp = 0.5;
-    // double ki = 0.0008;
-    // double kd = 0.0005;
-
+    double kp = 0.5;
+    double ki = 0.0008;
+    double kd = 0.0005;
+/*
     double kp = 100.0;
     double ki = 1.0;
     double kd = 0.0;
+*/
+    // double kp = 30.0;
+    // double ki = 0.05;
+    // double kd = 1.0;
 
     volatile double* input;
     volatile double* output;

@@ -1,50 +1,54 @@
 #include "MotionController.h"
+#include <math.h>
 
-MotionController::MotionController(Odometer* odometer, ImuReader* imu, MotorDriver* motors, SpeedControl* rightSpeedCtl, SpeedControl* leftSpeedCtl) : 
-imu(imu),
+MotionController::MotionController(Odometer* odometer, MotorDriver* motors) : 
 motors(motors), 
-odometer(odometer),
-rightSpeedCtl(rightSpeedCtl),
-leftSpeedCtl(leftSpeedCtl){}
+odometer(odometer){
+
+}
 
 void MotionController::rotate(float degrees, bool clockwise) {
-   
+    float rads = degrees * TWO_PI / 360;
+    float rotationRadius = 7.8;
+    float targetDistance = rads * rotationRadius;
+    waitForDistance(targetDistance,  Motion(motors, clockwise ? Motion::clockwise : Motion::counterclockwise, leftPulseLength, rightPulseLength));
 }
 
 void MotionController::stop() {
     motors->stop();
 }
 
-void MotionController::moveForward(float cm) {        
-    waitForDistance(cm, true);    
+void MotionController::moveForward(float cm) {
+    Motion motion(motors, Motion::forward, leftPulseLength, rightPulseLength);
+    waitForDistance(cm, motion);    
 }
 
-void MotionController::moveBackwards(float cm) {    
-    waitForDistance(cm, false);    
+void MotionController::moveBackwards(float cm) {        
+    Motion motion(motors, Motion::backwards, leftPulseLength, rightPulseLength);
+    waitForDistance(cm, motion);    
 }
 
-void MotionController::waitForDistance(float cm, bool forward) {
 
-    odometer->enable();
-    rightSpeedCtl->enable();
-    leftSpeedCtl->enable();
-
-    if (forward) 
-        motors->moveForward(); 
-    else 
-        motors->moveBackwards();
+void MotionController::waitForDistance(float cm, Motion m) {
+    odometer->enable();   
     
-    float r = 0, l = 0;
-    while ((r = odometer->getRightDistance()) < cm ||
-           (l = odometer->getLeftDistance()) < cm) {
-        rightSpeedCtl->updatePID();
-        leftSpeedCtl->updatePID();
-        if (r >= cm) motors->stopRight();
-        if (l >= cm) motors->stopLeft();
+    int targetTicks = (int) ceil(cm / (TWO_PI * 3.15) * 195);
+    Serial.print("target: ");
+    Serial.println(targetTicks);
+    
+    while (Odometer::rightInt < targetTicks || Odometer::leftInt < targetTicks) {
+        
+        //if (Odometer::rightInt <= Odometer::leftInt)
+        if (Odometer::rightInt <= targetTicks) {
+            m.right();
+        }
+        
+        //if (Odometer::leftInt <= Odometer::rightInt)
+        if (Odometer::leftInt <= targetTicks) {
+            m.left();
+        }
     }
 
     motors->stop();
-    rightSpeedCtl->disable();
-    leftSpeedCtl->disable();
     odometer->disable();
 }

@@ -18,69 +18,46 @@ void MotorDriver::stop()
     stopLeft();
 }
 
-void MotorDriver::moveForward()
-{
-	Serial.println("moveForward");
-	rightForward();
-    leftForward();
-}
-
-void MotorDriver::moveBackwards()
-{
-	Serial.println("moveBackwards");
-	rightBackwards();
-    leftBackwards();
-}
-
-void MotorDriver::rotate(bool clockwise)
-{
-	// Serial.println("rotate");
-    if (clockwise) {
-        rightForward();
-        leftBackwards();
-    } else {
-        rightBackwards();
-        leftForward();
-    }    	
-}
-
 void MotorDriver::rightForward() {
-    digitalWrite(right0, LOW);
-    digitalWrite(right1, HIGH);
-}
-
-void MotorDriver::rightBackwards() {
     digitalWrite(right0, HIGH);
     digitalWrite(right1, LOW);
 }
 
-void MotorDriver::stopRight() {
-    digitalWrite(right0, LOW);
-    digitalWrite(right1, LOW);
-    rightPulseLength = 0;
-}
-
 void MotorDriver::leftForward() {
-    digitalWrite(left0, HIGH);
-    digitalWrite(left1, LOW);
-    leftPulseLength = 0;
-}
-
-void MotorDriver::leftBackwards() {
     digitalWrite(left0, LOW);
     digitalWrite(left1, HIGH);
 }
 
-void MotorDriver::stopLeft() {
-    digitalWrite(left0, LOW);
+void MotorDriver::rightBackwards() {
+    digitalWrite(right0, LOW);
+    digitalWrite(right1, HIGH);
+}
+
+void MotorDriver::leftBackwards() {
+    digitalWrite(left0, HIGH);
     digitalWrite(left1, LOW);
 }
 
-void MotorDriver::setPower(float multiplier) {    
-    analogWrite(rightPwm,rightPulseLength);
-    analogWrite(leftPwm, leftPulseLength);
+void MotorDriver::stopRight() {
+    //Serial.println("stop right");
+    digitalWrite(right0, LOW);
+    digitalWrite(right1, LOW);
+    setRightPulseLength(0.0);
 }
 
-float MotorDriver::getPower() {
-    return 1;
+void MotorDriver::stopLeft() {
+    //Serial.println("stop left");
+    digitalWrite(left0, LOW);
+    digitalWrite(left1, LOW);
+    setLeftPulseLength(0.0);
+}
+
+void MotorDriver::setRightPulseLength(double l) {
+    rightPulseLength = l;
+    analogWrite(rightPwm, rightPulseLength);
+}
+
+void MotorDriver::setLeftPulseLength(double l) {
+    leftPulseLength = l;
+    analogWrite(leftPwm, leftPulseLength);
 }
