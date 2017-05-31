@@ -7,18 +7,19 @@
 
 class MotionController {
 public:
-    MotionController(Odometer* odometer, MotorDriver * motors);
+    MotionController(Odometer* odometer, MotorDriver * motors, SpeedControl* speedCtl);
     void rotate(float degrees, bool clockwise);    
     void stop();
     void moveForward(float cm);
 	void moveBackwards(float cm);	
 
-    int rightPulseLength = 140;
-    int leftPulseLength = 200;
+    int initialRightPulseLength = 180;
+    int initialLeftPulseLength = 180;
 private:    
     MotorDriver* motors;
     Odometer* odometer;
-    void waitForDistance(float cm, Motion m);  
+    SpeedControl* speedCtl;
+    void waitForDistance(float cm);  
     
 };
 

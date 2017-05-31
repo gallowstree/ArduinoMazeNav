@@ -16,7 +16,9 @@ DistanceSensor sensor2(A2, A3);
 MotorDriver mtrDriver;
 ImuReader imu;
 Odometer odometer(19, 18);
-MotionController motion(&odometer, &mtrDriver);
+SpeedControl speedCtl(&Odometer::leftAngularVelocity, &Odometer::rightAngularVelocity, &mtrDriver);
+MotionController motion(&odometer, &mtrDriver, &speedCtl);
+
 
 WifiConnection conn;
 CommandDispatcher cmdDispatcher(&motion);
@@ -36,10 +38,8 @@ void setup() {
 	conn.Begin();
 	tcpDispatcher.begin();
 
-	Odometer::motors = &mtrDriver;
-
-	odometer.enable();
-
+	Odometer::motors = &mtrDriver;	
+	Odometer::theSpeedCtl = &speedCtl;
 }
 
 void printInterruptCounters() {

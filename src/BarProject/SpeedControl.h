@@ -2,18 +2,19 @@
 #define MYARDUINOPROJECT_PID_H
 
 #include "PID_v1.h"
+#include "MotorDriver.h"
 class SpeedControl {
 public:
-    SpeedControl(volatile double* input, volatile double* output, double* setpoint, int pin);
+    SpeedControl(volatile double* leftSpeed, volatile double* rightSpeed, MotorDriver* motors);
     void enable();
     void disable();
     void updatePID();
 
 private:
     PID myPID;
-    double kp = 0.5;
-    double ki = 0.0008;
-    double kd = 0.0005;
+    double kp = 1.15;
+    double ki = 0.25;
+    double kd = 0.7;
 /*
     double kp = 100.0;
     double ki = 1.0;
@@ -23,10 +24,13 @@ private:
     // double ki = 0.05;
     // double kd = 1.0;
 
-    volatile double* input;
-    volatile double* output;
-    double* setpoint;
-    int pin;
+    volatile double* leftSpeed; 
+    volatile double* rightSpeed;
+
+    volatile double input = 0;
+    volatile double output = 0;
+    double setpoint = 0;    
+    MotorDriver* motors;
 };
 
 #endif
