@@ -20,9 +20,13 @@ void MotionController::stop() {
 }
 
 void MotionController::moveForward(float cm) {    
+    odometer->enable();  
+    speedCtl->enable();
     motors->rightForward();
     motors->leftForward();
-    waitForDistance(cm);    
+    waitForDistance(cm); 
+    odometer->disable();
+    speedCtl->disable();   
 }
 
 void MotionController::moveBackwards(float cm) {            
@@ -35,8 +39,8 @@ void MotionController::moveBackwards(float cm) {
 void MotionController::waitForDistance(float cm) {
     motors->setRightPulseLength(initialRightPulseLength);
     motors->setLeftPulseLength(initialLeftPulseLength);
-    speedCtl->enable();
-    odometer->enable();   
+    
+     
 
     
     int targetTicks = (int) ceil(cm / (TWO_PI * 3.15) * 195);    
@@ -45,12 +49,17 @@ void MotionController::waitForDistance(float cm) {
     do { 
         rightDone = Odometer::rightInt >= targetTicks;
         leftDone = Odometer::leftInt >= targetTicks;
-        if (rightDone) motors->stopRight();
-        if (leftDone)  motors->stopLeft();
-    } while (!leftDone || !rightDone);
+        if (rightDone) {
+            motors->stopRight(); 
+            speedCtl->disable();
+        }
 
-    speedCtl->disable();
-    motors->stop();
-    odometer->disable();
+        if (leftDone) {
+            motors->stopLeft();
+            speedCtl->disable();
+        } 
+        //speedCtl->updatePID();
+    } while (!leftDone || !rightDone);
     
+    motors->stop();    
 }

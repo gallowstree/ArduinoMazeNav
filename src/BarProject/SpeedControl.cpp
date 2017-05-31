@@ -6,38 +6,51 @@ leftSpeed(leftSpeed),
 rightSpeed(rightSpeed),
 motors(motors),
 myPID(&input, &output, &setpoint, kp, ki, kd, DIRECT) {
-    myPID.SetSampleTime(25);
-    myPID.SetOutputLimits(0, 10);
+    myPID.SetSampleTime(50);
+    myPID.SetOutputLimits(-5, 5);
 }
 
 void SpeedControl::enable() {
+    enabled = true;
     myPID.SetMode(AUTOMATIC);
     myPID.SetTunings(kp, ki, kd);    
 }
 
 void SpeedControl::disable() {
     myPID.SetMode(MANUAL);
-    output = 0;
+    enabled = false;
 }
 
 void SpeedControl::updatePID() {
+    if (!enabled)
+        return;
+
     auto diff = *leftSpeed - *rightSpeed;
-    input = abs(diff);
-    myPID.Compute();
+    input = diff;//abs(diff);
+    if (!myPID.Compute()) return;
+
+    output = abs(output);
 
     auto newLeft  =  motors->leftPulseLength  + ( diff > 0 ? -(output) : output );
     auto newRight =  motors->rightPulseLength + ( diff > 0 ? output : -(output) );
 
-    Serial.print("output: ");
-    Serial.print(output);
-    Serial.print(" lv: ");
-    Serial.print(*leftSpeed);
-    Serial.print(" rv: ");
-    Serial.print(*rightSpeed);
-    Serial.print(" nl: ");
-    Serial.print(newLeft);
-    Serial.print(" nr: ");
-    Serial.println(newRight);
+    if (newLeft > maxPwm) newLeft = maxPwm;
+    else if (newLeft < minPwm) newLeft = minPwm;
+
+    if (newRight > maxPwm) newRight = maxPwm;
+    else if (newRight < minPwm) newRight = minPwm;
+    // Serial.print("i: ");
+    // Serial.print(input);
+    // Serial.print("o: ");
+    // Serial.print(output);
+    // Serial.print(" lv: ");
+    // Serial.print(*leftSpeed);
+    // Serial.print(" rv: ");
+    // Serial.print(*rightSpeed);
+    // Serial.print(" nl: ");
+    // Serial.print(newLeft);
+    // Serial.print(" nr: ");
+    // Serial.println(newRight);
 
     motors->setLeftPulseLength(newLeft);
     motors->setRightPulseLength(newRight);
