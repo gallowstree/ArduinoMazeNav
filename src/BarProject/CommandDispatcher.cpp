@@ -21,8 +21,8 @@ void CommandDispatcher::handleMessage(char* data) {
 		memset(cmdType, 0, cmdTypeLength + 1);
 		memcpy(cmdType, data, cmdTypeLength);	
 
-		// Serial.print("cmdType: ");
-		// Serial.println(cmdType);		
+		Serial.print("cmdType: ");
+		Serial.println(cmdType);		
 
 		if (strcmp(cmdType, "MOTOR") == 0) {			
 			handleMotorCmd(data + cmdTypeLength + 1);
@@ -77,6 +77,7 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 void CommandDispatcher::handleRouteCmd(char * data) {
 		int actionLength = indexOf(data, '\n', 0);
 		Serial.println("handling Routercmd");
+		Serial.println(data);
 		if (actionLength != -1) {
 			auto action = new char[actionLength + 1];	
 			memset(action, 0, actionLength + 1);
@@ -85,25 +86,24 @@ void CommandDispatcher::handleRouteCmd(char * data) {
 			Serial.print("action: ");
 			Serial.println(action);
 
-			int cmdParamLength = indexOf(data, '\n', actionLength);
-			float cmdParam = 0;
-
+			int cmdParamLength = indexOf(data, '\n', actionLength + 1);			
+			Serial.print("cmdParamLength: ");
+			Serial.println(cmdParamLength);
 			if (cmdParamLength != -1) {
-				//This is not really a string, it is an array of chars where each char
-				//represents a direction: 0 = l, 1 = u, 2 = r, 3 = d. -'\n' represents
-				//the end of the route.
 				auto paramStr = new char[cmdParamLength + 1];
 				memset(paramStr, 0, cmdParamLength + 1);
-				memcpy(paramStr, data + actionLength, cmdParamLength);							
+				memcpy(paramStr, data + actionLength + 1, cmdParamLength);		
 
+				for (int i = 0; i < cmdParamLength; i++) {
+					Serial.println(paramStr[i]);
+				}
+				
 				if (strcmp(action, "START") == 0) {
 					routeExec->executeRoute(paramStr);
 				}
 
 				delete[] paramStr;
 			}		
-
-			 
 
 			delete[] action;
 		}

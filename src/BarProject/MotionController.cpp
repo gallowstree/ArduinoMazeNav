@@ -12,7 +12,7 @@ void MotionController::rotate(float degrees, bool clockwise) {
     if (degrees == 0) 
         return;
 
-    float rads = degrees * TWO_PI / 360;
+    float rads = degrees * TWO_PI / 360.0f;
     float rotationRadius = 5.3;
     float targetDistance = rads * rotationRadius;
     beforeMoving();
@@ -22,6 +22,9 @@ void MotionController::rotate(float degrees, bool clockwise) {
 }
 
 void MotionController::rotateWithSign(float degrees) {
+    Serial.print("Rotating ");
+    Serial.print(degrees);
+    Serial.println(" degs");
     rotate(degrees, degrees > 0);
 }
 
@@ -80,7 +83,7 @@ void MotionController::waitForDistance(float cm) {
             // motors->setLeftPulseLength(initialRightPulseLength);            
         } 
         //speedCtl->updatePID();
-    } while (!leftDone || !rightDone);
+    } while (!leftDone && !rightDone);
     
     motors->stop();    
 }

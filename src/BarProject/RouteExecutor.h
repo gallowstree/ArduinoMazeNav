@@ -19,7 +19,7 @@ private:
     MotionController* motion;
     float tileSizeCm = 25;
     int stepDelayMs = 500;
-    char currentDirection = 0;
+    int currentDirection = DIRECTION_LEFT;
     const float rotationLookup[4][4] = {
     /*-------TO STATE --------*/
     //   L    U     R    D    // FROM STATE  
