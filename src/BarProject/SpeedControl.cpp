@@ -7,7 +7,7 @@ rightSpeed(rightSpeed),
 motors(motors),
 myPID(&input, &output, &setpoint, kp, ki, kd, DIRECT) {
     myPID.SetSampleTime(50);
-    myPID.SetOutputLimits(-5, 5);
+    myPID.SetOutputLimits(-15, 15);
 }
 
 void SpeedControl::enable() {

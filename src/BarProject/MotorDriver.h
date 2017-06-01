@@ -15,6 +15,9 @@ class MotorDriver {
 
 		void leftForward();
 		void leftBackwards();
+		void forward();
+		void backwards();
+		void rotate(bool clockwise);
 		void stopLeft();		
 
 		int rightPwm = 3;

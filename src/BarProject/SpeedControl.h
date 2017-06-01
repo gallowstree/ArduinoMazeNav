@@ -12,21 +12,23 @@ public:
 
 private:
     PID myPID;
-    double kp = 0.4;
-    double ki = 0.2;
-    double kd = 1;
+    // double kp = 1.5;
+    // double ki = 0.5;
+    // double kd = 1;
+
+    // ahora sí
+    // double kp = 1.5;
+    // double ki = 50;
+    // double kd = 2.5;
+
+    double kp = 1;
+    double ki = 50;
+    double kd = 2.5;
+
     bool enabled = false;
 
     double minPwm = 100;
     double maxPwm = 255;
-/*
-    double kp = 100.0;
-    double ki = 1.0;
-    double kd = 0.0;
-*/
-    // double kp = 30.0;
-    // double ki = 0.05;
-    // double kd = 1.0;
 
     volatile double* leftSpeed; 
     volatile double* rightSpeed;

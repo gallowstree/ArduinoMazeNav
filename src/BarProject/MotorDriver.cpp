@@ -52,6 +52,26 @@ void MotorDriver::stopLeft() {
     setLeftPulseLength(0.0);
 }
 
+void MotorDriver::forward() {
+    rightForward();
+    leftForward();
+}
+
+void MotorDriver::backwards() {
+    rightBackwards();
+    leftBackwards();
+}
+
+void MotorDriver::rotate(bool clockwise) {
+    if (clockwise) {
+        leftForward();
+        rightBackwards();
+    } else {
+        leftBackwards();
+        rightForward();
+    }
+}
+
 void MotorDriver::setRightPulseLength(double l) {
     rightPulseLength = l;
     analogWrite(rightPwm, rightPulseLength);

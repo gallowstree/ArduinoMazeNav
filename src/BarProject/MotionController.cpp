@@ -9,10 +9,13 @@ speedCtl(speedCtl){
 }
 
 void MotionController::rotate(float degrees, bool clockwise) {
-    // float rads = degrees * TWO_PI / 360;
-    // float rotationRadius = 7.8;
-    // float targetDistance = rads * rotationRadius;
-    //waitForDistance(targetDistance,  Motion(motors, clockwise ? Motion::clockwise : Motion::counterclockwise, leftPulseLength, rightPulseLength));
+    float rads = degrees * TWO_PI / 360;
+    float rotationRadius = 5.3;
+    float targetDistance = rads * rotationRadius;
+    beforeMoving();
+    motors->rotate(clockwise);
+    waitForDistance(targetDistance);
+    afterMoving();
 }
 
 void MotionController::stop() {
@@ -21,16 +24,14 @@ void MotionController::stop() {
 
 void MotionController::moveForward(float cm) {        
     beforeMoving();
-    motors->rightForward();
-    motors->leftForward();
+    motors->forward();
     waitForDistance(cm); 
     afterMoving(); 
 }
 
 void MotionController::moveBackwards(float cm) {
     beforeMoving();       
-    motors->rightBackwards();
-    motors->leftBackwards();
+    motors->backwards();
     waitForDistance(cm);
     afterMoving();    
 }
@@ -50,7 +51,6 @@ void MotionController::afterMoving() {
     speedCtl->enable(); 
 }
 
-
 void MotionController::waitForDistance(float cm) {    
     int targetTicks = (int) floor(cm / (TWO_PI * 3.16) * 195);    
     bool rightDone = false;
@@ -58,14 +58,19 @@ void MotionController::waitForDistance(float cm) {
     do { 
         rightDone = Odometer::rightInt >= targetTicks;
         leftDone = Odometer::leftInt >= targetTicks;
+
         if (rightDone) {
-            motors->stopRight(); 
             speedCtl->disable();
+            motors->stopRight();
+            motors->stopLeft();
+            // motors->setLeftPulseLength(initialLeftPulseLength);
         }
 
         if (leftDone) {
-            motors->stopLeft();
             speedCtl->disable();
+            motors->stopLeft();
+            motors->stopRight();
+            // motors->setLeftPulseLength(initialRightPulseLength);            
         } 
         //speedCtl->updatePID();
     } while (!leftDone || !rightDone);
