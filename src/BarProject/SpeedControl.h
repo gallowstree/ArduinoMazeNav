@@ -12,9 +12,9 @@ public:
 
 private:
     PID myPID;
-    double kp = 1.5;
-    double ki = 0.0;
-    double kd = 0.0;
+    double kp = 0.4;
+    double ki = 0.2;
+    double kd = 1;
     bool enabled = false;
 
     double minPwm = 100;

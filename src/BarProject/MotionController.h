@@ -13,13 +13,15 @@ public:
     void moveForward(float cm);
 	void moveBackwards(float cm);	
 
-    int initialRightPulseLength = 160;
-    int initialLeftPulseLength = 160;
+    int initialRightPulseLength = 120;
+    int initialLeftPulseLength = 140;
 private:    
     MotorDriver* motors;
     Odometer* odometer;
     SpeedControl* speedCtl;
     void waitForDistance(float cm);  
+    void beforeMoving();
+    void afterMoving();
     
 };
 

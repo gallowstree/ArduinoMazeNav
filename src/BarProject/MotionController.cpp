@@ -19,31 +19,40 @@ void MotionController::stop() {
     motors->stop();
 }
 
-void MotionController::moveForward(float cm) {    
-    odometer->enable();  
-    speedCtl->enable();
+void MotionController::moveForward(float cm) {        
+    beforeMoving();
     motors->rightForward();
     motors->leftForward();
     waitForDistance(cm); 
-    odometer->disable();
-    speedCtl->disable();   
+    afterMoving(); 
 }
 
-void MotionController::moveBackwards(float cm) {            
+void MotionController::moveBackwards(float cm) {
+    beforeMoving();       
     motors->rightBackwards();
     motors->leftBackwards();
-    waitForDistance(cm);    
+    waitForDistance(cm);
+    afterMoving();    
+}
+
+void MotionController::beforeMoving() {
+    motors->setRightPulseLength(initialRightPulseLength);
+    motors->setLeftPulseLength(initialLeftPulseLength);             
+    odometer->enable();  
+    speedCtl->enable(); 
 }
 
 
-void MotionController::waitForDistance(float cm) {
+void MotionController::afterMoving() {
     motors->setRightPulseLength(initialRightPulseLength);
-    motors->setLeftPulseLength(initialLeftPulseLength);
-    
-     
+    motors->setLeftPulseLength(initialLeftPulseLength);             
+    odometer->enable();  
+    speedCtl->enable(); 
+}
 
-    
-    int targetTicks = (int) ceil(cm / (TWO_PI * 3.15) * 195);    
+
+void MotionController::waitForDistance(float cm) {    
+    int targetTicks = (int) floor(cm / (TWO_PI * 3.16) * 195);    
     bool rightDone = false;
     bool leftDone = false;
     do { 

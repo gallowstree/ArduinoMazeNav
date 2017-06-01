@@ -23,7 +23,7 @@ void TcpDispatcher::checkForPackets() {
         {
             while (!client.available());
             
-                char c = client.read();
+            char c = client.read();
 
             if (shouldCopy)
                 inBuffer[i++] = c;
