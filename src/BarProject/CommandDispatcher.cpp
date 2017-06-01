@@ -3,8 +3,9 @@
 #include "string.h"
 #include <Arduino.h>
 
-CommandDispatcher::CommandDispatcher(MotionController* motion) : 	
-	motionController(motion) 
+CommandDispatcher::CommandDispatcher(MotionController* motion, RouteExecutor* routeExec) : 	
+	motionController(motion),
+	routeExec(routeExec) 
 	{
 		
 	}
@@ -25,9 +26,11 @@ void CommandDispatcher::handleMessage(char* data) {
 
 		if (strcmp(cmdType, "MOTOR") == 0) {			
 			handleMotorCmd(data + cmdTypeLength + 1);
+		} else if (strcmp(cmdType, "ROUTE") == 0) {
+			handleRouteCmd(data + cmdTypeLength + 1);
 		}
 
-		delete cmdType;
+		delete[] cmdType;
 	}	
 }
 
@@ -52,6 +55,7 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 			cmdParam = atof(paramStr);
 			Serial.print("Param: ");
 			Serial.println(cmdParam);
+			delete[] paramStr;
 		}		
 
 		if (strcmp(action, "STOP") == 0) {
@@ -66,6 +70,42 @@ void CommandDispatcher::handleMotorCmd(char * data) {
 			motionController->rotate(cmdParam, false);
 		}
 
-		delete action;
+		delete[] action;
 	}
 }
+
+void CommandDispatcher::handleRouteCmd(char * data) {
+		int actionLength = indexOf(data, '\n', 0);
+		Serial.println("handling Routercmd");
+		if (actionLength != -1) {
+			auto action = new char[actionLength + 1];	
+			memset(action, 0, actionLength + 1);
+			memcpy(action, data, actionLength);	
+
+			Serial.print("action: ");
+			Serial.println(action);
+
+			int cmdParamLength = indexOf(data, '\n', actionLength);
+			float cmdParam = 0;
+
+			if (cmdParamLength != -1) {
+				//This is not really a string, it is an array of chars where each char
+				//represents a direction: 0 = l, 1 = u, 2 = r, 3 = d. -'\n' represents
+				//the end of the route.
+				auto paramStr = new char[cmdParamLength + 1];
+				memset(paramStr, 0, cmdParamLength + 1);
+				memcpy(paramStr, data + actionLength, cmdParamLength);							
+
+				if (strcmp(action, "START") == 0) {
+					routeExec->executeRoute(paramStr);
+				}
+
+				delete[] paramStr;
+			}		
+
+			 
+
+			delete[] action;
+		}
+	}
+

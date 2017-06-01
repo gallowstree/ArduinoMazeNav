@@ -18,10 +18,10 @@ ImuReader imu;
 Odometer odometer(19, 18);
 SpeedControl speedCtl(&Odometer::leftAngularVelocity, &Odometer::rightAngularVelocity, &mtrDriver);
 MotionController motion(&odometer, &mtrDriver, &speedCtl);
-
+RouteExecutor routeExec(&motion);
 
 WifiConnection conn;
-CommandDispatcher cmdDispatcher(&motion);
+CommandDispatcher cmdDispatcher(&motion, &routeExec);
 TcpDispatcher tcpDispatcher(4420, &cmdDispatcher);
 
 float prevLeft = 0;

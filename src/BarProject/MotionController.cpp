@@ -9,6 +9,9 @@ speedCtl(speedCtl){
 }
 
 void MotionController::rotate(float degrees, bool clockwise) {
+    if (degrees == 0) 
+        return;
+
     float rads = degrees * TWO_PI / 360;
     float rotationRadius = 5.3;
     float targetDistance = rads * rotationRadius;
@@ -16,6 +19,10 @@ void MotionController::rotate(float degrees, bool clockwise) {
     motors->rotate(clockwise);
     waitForDistance(targetDistance);
     afterMoving();
+}
+
+void MotionController::rotateWithSign(float degrees) {
+    rotate(degrees, degrees > 0);
 }
 
 void MotionController::stop() {

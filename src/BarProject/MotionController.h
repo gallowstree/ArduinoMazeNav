@@ -8,7 +8,8 @@
 class MotionController {
 public:
     MotionController(Odometer* odometer, MotorDriver * motors, SpeedControl* speedCtl);
-    void rotate(float degrees, bool clockwise);    
+    void rotate(float degrees, bool clockwise);   
+    void rotateWithSign(float degrees); 
     void stop();
     void moveForward(float cm);
 	void moveBackwards(float cm);	
