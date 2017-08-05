@@ -14,8 +14,8 @@ public:
     void moveForward(float cm);
 	void moveBackwards(float cm);	
 
-    int initialRightPulseLength = 150;
-    int initialLeftPulseLength = 150;
+    int initialRightPulseLength = 125;
+    int initialLeftPulseLength = 125;
 private:    
     MotorDriver* motors;
     Odometer* odometer;

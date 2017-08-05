@@ -13,7 +13,7 @@ void MotionController::rotate(float degrees, bool clockwise) {
         return;
 
     float rads = degrees * TWO_PI / 360.0f;
-    float rotationRadius = 5.3;
+    float rotationRadius = clockwise ? 5.6 : 6.1;
     float targetDistance = rads * rotationRadius;
     beforeMoving();
     motors->rotate(clockwise);
@@ -62,7 +62,7 @@ void MotionController::afterMoving() {
 }
 
 void MotionController::waitForDistance(float cm) {    
-    int targetTicks = (int) floor(cm / (TWO_PI * 3.16) * 195);    
+    int targetTicks = (int) floor(cm / (TWO_PI * 2.1) * 230);    
     bool rightDone = false;
     bool leftDone = false;
     do { 
@@ -70,9 +70,7 @@ void MotionController::waitForDistance(float cm) {
         leftDone = Odometer::leftInt >= targetTicks;
 
         if (rightDone) {
-            speedCtl->disable();
-            motors->stopRight();
-            motors->stopLeft();
+            speedCtl->disable();            
             // motors->setLeftPulseLength(initialLeftPulseLength);
         }
 

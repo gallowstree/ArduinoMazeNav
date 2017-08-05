@@ -30,8 +30,8 @@ void TcpDispatcher::checkForPackets() {
             if (!shouldCopy && c == ':')
                 shouldCopy = true;                            
         }
-        // Serial.println("inBuffer:");
-        // Serial.println(inBuffer);
+        Serial.println("inBuffer:");
+        Serial.println(inBuffer);
         //client.stop();
 
         dispatcher->handleMessage(inBuffer);

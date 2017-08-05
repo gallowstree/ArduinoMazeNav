@@ -12,7 +12,7 @@ CommandDispatcher::CommandDispatcher(MotionController* motion, RouteExecutor* ro
 
 void CommandDispatcher::handleMessage(char* data) {
 
-	// Serial.println("CommandDispatcher::handleMessage");
+	 Serial.println("CommandDispatcher::handleMessage");
 	
 	int cmdTypeLength = indexOf(data, '\n', 0);
 

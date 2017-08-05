@@ -4,10 +4,11 @@
 RouteExecutor::RouteExecutor(MotionController* motion) : motion(motion) {}
 
 void RouteExecutor::executeRoute(const char* route) {    
-    Serial.print("executingRoute: ");    
+    Serial.print("executingRoute: ");  
+    Serial.println(route);
     int i = 0;
-    int current = currentDirection;    
-    int next = atoi(route[i++]);
+    char current = currentDirection;    
+    char next = route[i++];
 
     Serial.print("Moving from ");
     Serial.print(current);
@@ -18,8 +19,8 @@ void RouteExecutor::executeRoute(const char* route) {
         Serial.println(next); 
         transition(current, next);
         current = next;        
-        next = atoi(route[i++]);
-        if (next == 10) break; //this is the newline xD
+        next = route[i++];
+        if (next > 3) break; //this is the newline xD
     }
     motion->rotateWithSign(360);
 }

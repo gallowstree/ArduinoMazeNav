@@ -15,7 +15,7 @@ DistanceSensor sensor2(A2, A3);
 
 MotorDriver mtrDriver;
 ImuReader imu;
-Odometer odometer(19, 18);
+Odometer odometer(20, 21, 18, 19);
 SpeedControl speedCtl(&Odometer::leftAngularVelocity, &Odometer::rightAngularVelocity, &mtrDriver);
 MotionController motion(&odometer, &mtrDriver, &speedCtl);
 RouteExecutor routeExec(&motion);
@@ -35,16 +35,17 @@ void setup() {
 	Wire.begin();
 	delay(1000);
 	
-	conn.Begin();
-	tcpDispatcher.begin();
+	// conn.Begin();
+	// tcpDispatcher.begin();
 
 	Odometer::motors = &mtrDriver;	
 	Odometer::theSpeedCtl = &speedCtl;
+	odometer.enable();
 }
 
 void printInterruptCounters() {
-	float left = Odometer::leftInt;
-	float right = Odometer::rightInt;
+	int left = Odometer::leftInt;
+	int right = Odometer::rightInt;
 
 	if (prevLeft != left || prevRight != right) {
 		Serial.print("Left: ");
@@ -57,6 +58,7 @@ void printInterruptCounters() {
 }
 
 void loop() {
-	tcpDispatcher.checkForPackets();	
-	//printInterruptCounters();	
+	//tcpDispatcher.checkForPackets();	
+	printInterruptCounters();	
+	
 }

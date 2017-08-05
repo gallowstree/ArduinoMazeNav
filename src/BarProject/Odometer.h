@@ -7,7 +7,7 @@
 class Odometer {
         
 public:
-	Odometer(int leftInterruptPin, int rightInterruptPin);
+	Odometer(int leftInterruptPinA, int leftInterruptPinB, int rightInterruptPinA, int rightInterruptPinB);
         void enable();
         void disable();
         
@@ -23,10 +23,17 @@ public:
 
         static void leftISR();
         static void rightISR();
-        static void encoderISR(volatile unsigned long* time, volatile int& interrupts, volatile double& angularVelocity, int interruptThreshold);
+        static void encoderISR(volatile unsigned long* time, volatile int& interrupts, volatile int16_t& encVal, int16_t encMask, volatile double& angularVelocity, int interruptThreshold);
 private:        
-        int leftInterruptPin;
-        int rightInterruptPin;                
+        int leftInterruptPinA;
+        int leftInterruptPinB;
+        int rightInterruptPinA;
+        int rightInterruptPinB;    
+        static int8_t lookup_table[16] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};  
+        volatile static int16_t encValRight;
+        volatile static int16_t encValLeft;         
+        static const int16_t encMaskRight = 0x000C;
+        static const int16_t encMaskLeft  = 0x0003;         
 };
 
 #endif
